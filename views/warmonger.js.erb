@@ -1,0 +1,22 @@
+var scheme   = "<%= @scheme %>";
+var uri      = scheme + window.document.location.host + "/";
+var ws       = new WebSocket(uri);
+
+subscribe = function() {
+  ws.onmessage = function(event){
+    data = JSON.parse(event.data)
+    var country = {};
+    country[data['country']] = {fillKey: data['team']};
+    map.updateChoropleth(country);
+  };
+  ws.onopen = function(event){
+    console.log("WebSocket connected.");
+  }
+  ws.onclose = function(event){
+    console.log("WebSocket closing.");
+    var ws = new WebSocket(uri);
+    subscribe();
+  }
+}
+
+subscribe();

@@ -1,4 +1,9 @@
-#chat-text {
-  overflow: auto;
-  height: 500px;
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Helvetica Neue", helvetica, arial;
+  padding: 15px;
 }

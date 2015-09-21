@@ -1,6 +1,5 @@
 require './app'
-require './middlewares/chat_backend'
+require './middlewares/warmonger'
 
-use ChatDemo::ChatBackend
-
-run ChatDemo::App
+use WearHacks2015::Warmonger
+run WearHacks2015::App
