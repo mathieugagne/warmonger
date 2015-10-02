@@ -7,8 +7,8 @@ require 'eventmachine'
 require 'json'
 
 EM.run {
-  url = 'ws://localhost:5000/'
-  # url = 'ws://wearhacks-2015.herokuapp.com/'
+  # url = 'ws://localhost:5000/'
+  url = 'wss://warmonger.herokuapp.com/'
   ws = Faye::WebSocket::Client.new(url)
 
   teams = ['Team Blue', 'Team Red']
@@ -17,7 +17,7 @@ EM.run {
 
   timer = EM.add_periodic_timer(0.05) do
     begin
-      team    = teams[iterator.odd? ? 0 : 1]
+      team    = teams.sample
       country = countries[iterator]
       message = {team: team, country: country}
       puts message
