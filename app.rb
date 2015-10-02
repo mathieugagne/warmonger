@@ -9,7 +9,7 @@ module WearHacks2015
       erb :"index.html"
     end
 
-    get "/assets/js/map.js" do
+    get "/assets/js/warmonger.js" do
       content_type :js
       uri = URI.parse(ENV["REDISCLOUD_URL"])
       @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
@@ -17,11 +17,6 @@ module WearHacks2015
       @countries = @redis.smembers('countries').collect do |country|
         Country.new(country, @redis.get(country))
       end
-      erb :"map.js"
-    end
-
-    get "/assets/js/warmonger.js" do
-      content_type :js
       @scheme = ENV['RACK_ENV'] == "production" ? "wss://" : "ws://"
       erb :"warmonger.js"
     end

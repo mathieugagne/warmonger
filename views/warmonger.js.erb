@@ -1,22 +1,51 @@
-var scheme   = "<%= @scheme %>";
-var uri      = scheme + window.document.location.host + "/";
-var ws       = new WebSocket(uri);
+var scheme = "<%= @scheme %>";
+var uri    = scheme + window.document.location.host + "/";
+var ws     = new WebSocket(uri);
+var data   = {<%= @countries.collect{|country| "'#{country.name}': {fillKey: '#{country.team}'}" }.join(',') %>};
 
-subscribe = function() {
+var map = new Datamap({
+    element: document.getElementById('container'),
+    responsive: true,
+    fills: {
+        'Team Blue': 'blue',
+        'Team Red': 'red',
+        defaultFill: '#EEE'
+    },
+    geographyConfig: {
+      popupOnHover: false,
+      highlightOnHover: false
+    },
+    data: data
+});
+
+//draw a legend for this map
+map.legend();
+
+window.addEventListener('resize', function() {
+    map.resize();
+});
+
+function subscribe() {
   ws.onmessage = function(event){
-    data = JSON.parse(event.data)
-    var country = {};
-    country[data['country']] = {fillKey: data['team']};
-    map.updateChoropleth(country);
+    console.log(event.data);
+    message = JSON.parse(event.data)
+    data[message['country']] = {fillKey: message['team']};
   };
   ws.onopen = function(event){
     console.log("WebSocket connected.");
   }
+  ws.onerror = function(errorEvent) {
+    console.log(errorEvent.data);
+  };
   ws.onclose = function(event){
     console.log("WebSocket closing.");
-    var ws = new WebSocket(uri);
-    subscribe();
+    setTimeout(function(){subscribe();}, 1000);
   }
 }
 
 subscribe();
+
+setInterval(function() {
+  console.log('updating');
+  map.updateChoropleth(data);
+}, 750);
