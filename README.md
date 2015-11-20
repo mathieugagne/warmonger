@@ -1,8 +1,8 @@
-# manufacturer-battle
-WearHacks 2015 Warmonger
+# Warmonger
 
 ## List of countries
 
+```
 // ABW	Aruba
 // AFG	Afghanistan
 // AGO	Angola
@@ -252,3 +252,4 @@ WearHacks 2015 Warmonger
 // ZAF	South Africa
 // ZMB	Zambia
 // ZWE	Zimbabwe
+```
